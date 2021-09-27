@@ -1,15 +1,19 @@
 <template>
-  <todo-list-item v-for="n in 20" :key="n" :todo="{ title: 'hello world' }" />
+  <todo-list-item v-for="todo in todos" :key="todo.id" :todo="todo" />
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import { mapState } from 'vuex';
 import TodoListItem from './TodoListItem.vue';
 
 export default defineComponent({
   name: 'TodoList',
   components: {
     TodoListItem,
+  },
+  computed: {
+    ...mapState('todos', ['todos']),
   },
 });
 </script>

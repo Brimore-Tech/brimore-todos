@@ -1,9 +1,13 @@
 <template>
   <div>
     <a-checkbox v-model:checked="completed"></a-checkbox>
-    <span class="title" @dblclick="enterEditingMode" v-if="!editingMode">{{
-      todo.title
-    }}</span>
+    <span
+      class="title"
+      v-bind:class="{ completed }"
+      @dblclick="enterEditingMode"
+      v-if="!editingMode"
+      >{{ todo.title }}</span
+    >
     <a-input
       type="text"
       @blur="closeEditingMode"
@@ -13,13 +17,24 @@
       v-focus
       v-else
     ></a-input>
-    <span class="delete-button"><delete-outlined /></span>
+    <span class="icon-button" @click="enterEditingMode" v-if="!editingMode"
+      ><edit-outlined
+    /></span>
+    <span class="icon-button" @click="closeEditingMode" v-else
+      ><check-outlined
+    /></span>
+    <span class="icon-button" @click="removeTodo"><delete-outlined /></span>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
-import { DeleteOutlined } from '@ant-design/icons-vue';
+import { mapActions } from 'vuex';
+import {
+  DeleteOutlined,
+  EditOutlined,
+  CheckOutlined,
+} from '@ant-design/icons-vue';
 import { Checkbox, Input } from 'ant-design-vue';
 import Todo from '@/types/Todo';
 
@@ -29,6 +44,8 @@ export default defineComponent({
     'a-checkbox': Checkbox,
     'a-input': Input,
     DeleteOutlined,
+    EditOutlined,
+    CheckOutlined,
   },
   props: {
     todo: {
@@ -44,12 +61,27 @@ export default defineComponent({
     };
   },
   methods: {
+    ...mapActions('todos', ['editTodo', 'deleteTodo']),
     enterEditingMode() {
       this.editingMode = true;
     },
     closeEditingMode(save = true) {
+      if (!this.editingMode) return;
       this.editingMode = false;
-      console.log(save);
+      if (save && this.todo.title !== this.title) {
+        this.editTodo({ ...this.todo, title: this.title }).finally(() => {
+          this.title = this.todo.title;
+        });
+      } else {
+        this.title = this.todo.title;
+      }
+    },
+    toggleComplete() {
+      this.editTodo({ ...this.todo, completed: this.completed });
+    },
+
+    removeTodo() {
+      this.deleteTodo(this.todo);
     },
   },
 });
@@ -80,6 +112,12 @@ input {
   width: 100%;
   cursor: text;
   padding-top: 3px;
+  overflow: hidden;
+}
+
+.completed {
+  text-decoration: line-through;
+  color: var(--light2) !important;
 }
 
 input:focus {
@@ -94,16 +132,17 @@ input {
   box-shadow: none !important;
 }
 
-.delete-button {
+.icon-button {
   float: right;
   color: var(--dark);
   text-align: center;
   cursor: pointer;
   padding: 3px 7px;
   border-radius: 100%;
+  margin-left: 5px;
 }
 
-.delete-button:hover {
+.icon-button:hover {
   background: var(--light2);
 }
 

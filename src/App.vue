@@ -1,5 +1,5 @@
 <template>
-  <layout>
+  <layout data-theme="blue">
     <template v-slot:header><filters-header /></template>
     <todo-list />
     <template v-slot:footer><input-footer /></template>
@@ -32,7 +32,15 @@ export default defineComponent({
   --light3: #e4e3a1;
   --dark: #484836;
 }
-body {
+.html[data-theme='blue'] {
+  --white-transparent: #ffffff61;
+  --light: #d7e9ff;
+  --light2: #6186b5;
+  --light3: #9fc5f5;
+  --dark: #373648;
+}
+.ant-layout {
+  height: 100vh;
   background-color: var(--light) !important;
   background-size: 100% 75px;
 }

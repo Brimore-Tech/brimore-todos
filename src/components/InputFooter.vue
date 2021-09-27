@@ -3,9 +3,11 @@
     class="dark-input"
     placeholder="What do you need to do?"
     v-model:value="newTodo"
+    @keydown.enter="add"
+    @keydown.esc="cancel"
   >
     <template #prefix>
-      <plus-outlined />
+      <plus-outlined @click="add" />
     </template>
   </a-input>
 </template>
@@ -14,6 +16,7 @@
 import { defineComponent } from 'vue';
 import { PlusOutlined } from '@ant-design/icons-vue';
 import { Input } from 'ant-design-vue';
+import { mapActions } from 'vuex';
 
 export default defineComponent({
   components: {
@@ -25,8 +28,21 @@ export default defineComponent({
       newTodo: '',
     };
   },
+  methods: {
+    ...mapActions('todos', ['addTodo']),
+    add() {
+      this.addTodo(this.newTodo);
+      this.newTodo = '';
+    },
+    cancel() {
+      (document.activeElement as HTMLElement).blur();
+      this.newTodo = '';
+    },
+  },
 });
 </script>
+
+<style scoped></style>
 
 <style lang="scss">
 .ant-input-affix-wrapper,
@@ -47,6 +63,7 @@ export default defineComponent({
 
 .dark-input.ant-input-affix-wrapper .ant-input-prefix {
   margin-right: 10px !important;
+  cursor: pointer;
 }
 
 .dark-input.ant-input-affix-wrapper input.ant-input::-webkit-input-placeholder {
