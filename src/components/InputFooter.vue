@@ -1,15 +1,16 @@
 <template>
-  <a-input
-    class="dark-input"
-    placeholder="What do you need to do?"
-    v-model:value="newTodo"
-    @keydown.enter="add"
-    @keydown.esc="cancel"
-  >
-    <template #prefix>
-      <plus-outlined @click="add" />
-    </template>
-  </a-input>
+  <form @submit.prevent="add">
+    <a-input
+      class="dark-input"
+      placeholder="What do you need to do?"
+      v-model:value="newTodo"
+      @keydown.esc="cancel"
+    >
+      <template #prefix>
+        <plus-outlined @click="add" />
+      </template>
+    </a-input>
+  </form>
 </template>
 
 <script lang="ts">

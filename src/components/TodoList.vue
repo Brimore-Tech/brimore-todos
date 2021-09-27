@@ -1,5 +1,8 @@
 <template>
-  <todo-list-item v-for="todo in filterTodos" :key="todo.id" :todo="todo" />
+  <div v-if="filteredTodos.length > 0">
+    <todo-list-item v-for="todo in filteredTodos" :key="todo.id" :todo="todo" />
+  </div>
+  <h1 v-else>No todos</h1>
 </template>
 
 <script lang="ts">
@@ -15,7 +18,7 @@ export default defineComponent({
   computed: {
     ...mapState('todos', ['todos', 'filter']),
     ...mapGetters('todos', ['completed', 'active']),
-    filterTodos() {
+    filteredTodos() {
       switch (this.filter) {
         case 'completed':
           return this.completed;
@@ -35,4 +38,11 @@ export default defineComponent({
 });
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+h1 {
+  text-align: center;
+  padding: 50px;
+  font-weight: 700;
+  color: var(--light2);
+}
+</style>

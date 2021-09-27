@@ -11,15 +11,15 @@
       v-if="!editingMode"
       >{{ todo.title }}</span
     >
-    <a-input
-      type="text"
-      @blur="closeEditingMode"
-      @keydown.enter="closeEditingMode"
-      @keydown.esc.stop="closeEditingMode(false)"
-      v-model:value="title"
-      v-focus
-      v-else
-    ></a-input>
+    <form @submit.prevent="closeEditingMode" v-else>
+      <a-input
+        type="text"
+        @blur="closeEditingMode"
+        @keydown.esc.stop="closeEditingMode(false)"
+        v-model:value="title"
+        v-focus
+      ></a-input>
+    </form>
     <span class="icon-button" @click="enterEditingMode" v-if="!editingMode"
       ><edit-outlined
     /></span>
@@ -133,9 +133,16 @@ input:focus {
 input {
   border: 0 !important;
   background: transparent;
-  margin-left: 20px;
+  margin: 0px;
   padding: 0;
   box-shadow: none !important;
+}
+
+form {
+  width: 100%;
+  margin: 0 20px;
+  line-height: initial;
+  margin-top: 3px;
 }
 
 .icon-button {
