@@ -36,4 +36,10 @@ body {
   background-color: var(--light) !important;
   background-size: 100% 75px;
 }
+* {
+  transition: 0.1s all ease 0s;
+  -webkit-transition: 0.1s all ease 0s;
+  -moz-transition: 0.1s all ease 0s;
+  -ms-transition: 0.1s all ease 0s;
+}
 </style>
