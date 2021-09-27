@@ -1,5 +1,5 @@
 <template>
-  <todo-list-item :todo="{ title: 'hello world' }" />
+  <todo-list-item v-for="n in 20" :key="n" :todo="{ title: 'hello world' }" />
 </template>
 
 <script lang="ts">
