@@ -1,7 +1,7 @@
 interface Todo {
-  description: string;
+  id: number;
+  title: string;
   completed: boolean;
-  important: boolean;
 }
 
 export default Todo;
