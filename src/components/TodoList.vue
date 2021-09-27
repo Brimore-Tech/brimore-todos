@@ -1,10 +1,10 @@
 <template>
-  <todo-list-item v-for="todo in todos" :key="todo.id" :todo="todo" />
+  <todo-list-item v-for="todo in filterTodos" :key="todo.id" :todo="todo" />
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { mapState } from 'vuex';
+import { mapActions, mapGetters, mapState } from 'vuex';
 import TodoListItem from './TodoListItem.vue';
 
 export default defineComponent({
@@ -13,7 +13,24 @@ export default defineComponent({
     TodoListItem,
   },
   computed: {
-    ...mapState('todos', ['todos']),
+    ...mapState('todos', ['todos', 'filter']),
+    ...mapGetters('todos', ['completed', 'active']),
+    filterTodos() {
+      switch (this.filter) {
+        case 'completed':
+          return this.completed;
+        case 'active':
+          return this.active;
+        default:
+          return this.todos;
+      }
+    },
+  },
+  created() {
+    this.getTodos();
+  },
+  methods: {
+    ...mapActions('todos', ['getTodos']),
   },
 });
 </script>

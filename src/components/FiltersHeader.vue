@@ -1,17 +1,25 @@
 <template>
   <div class="space-align-block">
     <h1>Agenda</h1>
-    <a-radio-group v-model:value="filter" button-style="solid">
-      <a-radio-button value="all">all</a-radio-button>
-      <a-radio-button value="completed">completed</a-radio-button>
-      <a-radio-button value="active">active</a-radio-button>
+    <a-radio-group
+      v-model:value="filter"
+      button-style="solid"
+      @change="setFilter"
+    >
+      <a-radio-button value="all">all ({{ count }})</a-radio-button>
+      <a-radio-button value="completed"
+        >completed ({{ completedCount }})</a-radio-button
+      >
+      <a-radio-button value="active">active ({{ activeCount }})</a-radio-button>
     </a-radio-group>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import { mapGetters, mapMutations } from 'vuex';
 import { RadioGroup, RadioButton } from 'ant-design-vue';
+import Filter from '@/types/Filter';
 
 export default defineComponent({
   components: {
@@ -20,8 +28,17 @@ export default defineComponent({
   },
   data() {
     return {
-      filter: 'all' as string,
+      filter: 'all' as Filter,
     };
+  },
+  methods: {
+    ...mapMutations('todos', ['SET_FILTER']),
+    setFilter() {
+      this.SET_FILTER(this.filter);
+    },
+  },
+  computed: {
+    ...mapGetters('todos', ['count', 'completedCount', 'activeCount']),
   },
 });
 </script>

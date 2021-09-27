@@ -1,6 +1,9 @@
 <template>
   <div>
-    <a-checkbox v-model:checked="completed"></a-checkbox>
+    <a-checkbox
+      v-model:checked="completed"
+      @change="toggleComplete"
+    ></a-checkbox>
     <span
       class="title"
       v-bind:class="{ completed }"
@@ -55,8 +58,8 @@ export default defineComponent({
   },
   data() {
     return {
-      completed: false,
       editingMode: false,
+      completed: this.todo.completed,
       title: this.todo.title as string,
     };
   },
@@ -79,7 +82,6 @@ export default defineComponent({
     toggleComplete() {
       this.editTodo({ ...this.todo, completed: this.completed });
     },
-
     removeTodo() {
       this.deleteTodo(this.todo);
     },
@@ -101,6 +103,10 @@ div {
 div:hover,
 div:focus-within {
   background: var(--light3);
+}
+
+div span.title {
+  max-height: 28px;
 }
 
 div span.title,

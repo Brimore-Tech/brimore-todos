@@ -39,7 +39,7 @@ export default defineComponent({
   --light3: #9fc5f5;
   --dark: #373648;
 }
-.ant-layout {
+body {
   height: 100vh;
   background-color: var(--light) !important;
   background-size: 100% 75px;
